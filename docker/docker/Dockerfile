@@ -1,11 +1,13 @@
 # syntax=docker/dockerfile:1
-ARG ENV=dev
+ARG ENVAR=dev
 
 FROM node:18 as builder
 
-WORKDIR ${ENV}
+COPY projects/${ENVAR} /dev
 
-ENV YARN_VERSION 1.16.0
+WORKDIR 
+
+ENV YARN_VERSION=1.16.0
 
 RUN curl -fSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$YARN_VERSION.tar.gz" \
     && tar -xzf yarn-v$YARN_VERSION.tar.gz -C /opt/ \
@@ -13,8 +15,7 @@ RUN curl -fSLO --compressed "https://yarnpkg.com/downloads/$YARN_VERSION/yarn-v$
     && ln -snf /opt/yarn-v$YARN_VERSION/bin/yarnpkg /usr/local/bin/yarnpkg \
     && rm yarn-v$YARN_VERSION.tar.gz
 
-RUN npm run build:${ENV}
-
+RUN npm run build:$ENV
 
 
 FROM nginx as app
