@@ -3,9 +3,9 @@ ARG ENVAR=dev
 
 FROM node:18 as builder
 
-COPY projects/${ENVAR} /dev
+COPY projects/${ENVAR} /${ENVAR}
 
-WORKDIR 
+WORKDIR ${ENVAR}
 
 ENV YARN_VERSION=1.16.0
 
