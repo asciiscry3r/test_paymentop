@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+{% block content %}
+<h1>Pushes</h1>
+<p>You have <strong>{{ pushes.length }}</strong> pushes!</p>
+<input placeholder="Push text" id="pushText" type="text" class="validate">
+<a class="btn-floating btn-large waves-effect waves-light red" onclick="addPush()"><i class="material-icons">+</i></a>
+<br /><br />
+<ul id="pushesList">
+    {% for push in pushes %}
+    <li>
+        <div><b>{{ push.text }}</b> <a href="/push/{{ push.id }}">and then just touch me</a></div>
+        <p class="hint">created: {{ push.created }} </p>        
+    </li>
+    {% endfor %}
+</ul>
+<script>
+    function addPush() {
+        const element = document.getElementById('pushText');
+        const text = element.value || 'no test';
+        element.value = '';
+        axios.post('/push', {
+            headers: { 'Content-Type': 'application/json' },
+            data: text
+        }).then(() => {
+            console.log('OK');
+            location.reload();
+        }).catch(error => {
+            console.log('not ok' + error.message);
+        });
+    }
+</script>
+{% endblock %}
