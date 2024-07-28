@@ -3,9 +3,9 @@ ARG NODE_VERSION=18.0.0
 
 FROM node:${NODE_VERSION} AS builder
 
-ARG ENVAR=dev
+ARG ENVAR=branchdev
 
-COPY ./projects/${ENVAR} /${ENVAR}
+COPY projects/${ENVAR} /${ENVAR}
 
 RUN ls -all /${ENVAR}
 
@@ -23,6 +23,6 @@ RUN npm run build:$ENVAR
 
 FROM nginx AS app
 
-ARG ENVAR=dev
+ARG ENVAR=branchdev
 
 COPY --from=builder /${ENVAR}/dist/${ENVAR} /usr/share/nginx/html
